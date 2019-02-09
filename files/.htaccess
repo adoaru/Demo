@@ -1,0 +1,11 @@
+# Папка для статичных файлов - показываем только разрешенные файлы
+RewriteEngine Off
+
+ Order Allow,Deny
+ Deny from all
+
+<FilesMatch ".(jpg|png|gif|js|css|eot|ttf|woff|woff2)$">
+ Order Allow,Deny
+ Allow from all
+</FilesMatch>
+

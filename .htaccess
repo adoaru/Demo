@@ -1,0 +1,13 @@
+AddDefaultCharset UTF-8
+Options +FollowSymlinks
+
+# Запрещаем прямой просмотр папок
+Options -Indexes
+
+# Обязательно своя страница 404
+ErrorDocument 404 /page404
+
+RewriteEngine on
+
+#Единая точка входа - статичные файлы разрешаются к показу отдельным .htaccess в папке стат.файлов /files
+RewriteRule . index.php
