@@ -13,3 +13,4 @@ $errorController = new ErrorHandler();
 
 include ROOT.'/lib/Exceptions.php';
 
+echo 'Some demo files';
