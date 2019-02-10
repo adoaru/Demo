@@ -1,9 +1,9 @@
 <?php
     /**
-     * Класс для загрузки файлов с других серверов с возможностью установить лимит по загрузке
+     * Класс для загрузки файлов с других серверов с возможностью установить макс.размер файла
      * При превышении указанного лимита например 5Mb загрузка будет прервана
      * Позволяет избегать загрузки больших файлов - экономит время и дисковое пространство
-    */
+     */
 
     class CurlDownloader
     {
@@ -18,6 +18,15 @@
         private $image = 0;
         private $errorMessage = 'Непредвиденная ошибка. К сожалению файл не загружен!';
 
+        /**
+         * CurlDownloader constructor.
+         * @param string $url
+         * @param string $localFileName
+         * @param int $maxFileSize
+         * @param int $image
+         * @throws BaseException
+         * @throws UserMessageException
+         */
         public function __construct($url='', $localFileName='', $maxFileSize=0, $image=0)
         {
 	        if(!$url)
@@ -39,6 +48,10 @@
             $this->debug = !$this->debug;
         }
 
+        /**
+         * @param $url
+         * @throws UserMessageException
+         */
         public function init($url)
         {
             if( !filter_var($url, FILTER_VALIDATE_URL) )
@@ -58,6 +71,11 @@
             curl_setopt($this->ch, CURLOPT_TIMEOUT, $con_timeout);
         }
 
+        /**
+         * @param $ch
+         * @param $string
+         * @return int
+         */
         public function headerCallback($ch, $string)
         {
 	        $len = strlen($string);
@@ -91,11 +109,17 @@
 	        return $len;
         }
 
+        /**
+         * @param $ch
+         * @param $string
+         * @return bool|int
+         * @throws BaseException
+         * @throws UserMessageException
+         */
         public function bodyCallback($ch, $string)
         {
             if( !$this->fp )
             {
-                $this->localFileName = $this->localFileName;
                 $this->fp = fopen($this->localFileName, 'wb');
                 if(!$this->fp )
                     throw new BaseException("Не могу открыть файл");
@@ -109,9 +133,13 @@
             return $len;
         }
 
+        /**
+         * @return int
+         * @throws UserMessageException
+         */
         public function download()
         {
-            $retval = curl_exec($this->ch);
+            curl_exec($this->ch);
             if($this->debug)
                 var_dump($this->headers);
             if($this->checkError())
@@ -126,6 +154,9 @@
             return $this->fileSize;
         }
 
+        /**
+         * @return bool
+         */
         public function checkError() {
         	if($this->fileSize>0)
         		return true;
@@ -136,8 +167,15 @@
 			}
         }
 
+        /**
+         * @return null|string
+         */
         public function getFileName() { return $this->localFileName; }
 
+        /**
+         * @param $string
+         * @return mixed
+         */
         private function unquote($string)
         {
             return str_replace(array("'", '"'), '', $string);

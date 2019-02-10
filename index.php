@@ -1,16 +1,13 @@
 <?php
-/**
- * Демо файл
- */
+/* Для перехвата ошибок запускается первым */
+include 'lib/ErrorHandler.php';
+$errorHandler = new ErrorHandler();
 
 define('ROOT', filter_input(INPUT_SERVER, 'DOCUMENT_ROOT', FILTER_SANITIZE_STRING));
 define('EOL', "\r\n");
 
 define('IN_DEV', filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING) === '127.0.0.1');
 
-include ROOT.'/lib/ErrorHandler.php';
-$errorController = new ErrorHandler();
+include 'lib/Exceptions.php';
 
-include ROOT.'/lib/Exceptions.php';
-
-echo 'Few demo files';
+echo 'Some demo files';

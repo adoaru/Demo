@@ -3,7 +3,7 @@ RewriteEngine Off
  Order Allow,Deny
  Deny from all
 
-<FilesMatch ".(jpg|png|gif|js|css|eot|ttf|woff|woff2)$">
+<FilesMatch ".(jpg|jpeg|png|gif|js|css|pdf|zip|eot|ttf|woff|woff2)$">
  Order Allow,Deny
  Allow from all
 </FilesMatch>
